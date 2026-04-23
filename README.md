@@ -33,6 +33,6 @@ A high-performance, security-hardened sandbox for executing untrusted Python and
 - `static/`: Minimalist frontend assets.
 - `execution.log`: Persistent audit trail.
 
-##A techincal Diagram of the entire system
+## A techincal Diagram of the entire system
 <img width="1024" height="558" alt="image" src="https://github.com/user-attachments/assets/b683d398-b4c0-4ccc-ba30-f6d6c3b18689" />
 
