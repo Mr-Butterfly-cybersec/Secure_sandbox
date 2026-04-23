@@ -1,0 +1,15 @@
+# Binaries
+bin/
+sandbox-api
+
+# Logs
+execution.log
+
+# OS
+.DS_Store
+
+# Go
+vendor/
+*.exe
+*.test
+*.out

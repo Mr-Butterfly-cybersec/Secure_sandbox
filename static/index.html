@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --border-color: #262626;
+            --accent-blue: #3b82f6;
+            --text-muted: #737373;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-primary); 
+            color: #fafafa;
+            letter-spacing: -0.01em;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .input-base {
+            background-color: #000;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.2s ease;
+        }
+
+        .input-base:focus {
+            border-color: var(--accent-blue);
+            outline: none;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
+        
+        .status-dot {
+            height: 6px;
+            width: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+        <header class="mb-12 flex justify-between items-end">
+            <div>
+                <h1 class="text-sm font-medium uppercase tracking-widest text-muted mb-1">Security Environment</h1>
+                <p class="text-2xl font-semibold">Sandbox Console</p>
+            </div>
+            <div id="status-indicator" class="flex items-center space-x-3 text-xs text-muted">
+                <span class="status-dot bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"></span>
+                <span class="font-medium tracking-tight">Active Node</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-12 gap-8">
+            <!-- Left: Workspace -->
+            <div class="col-span-12 lg:col-span-7 space-y-8">
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-muted">Input Workspace</span>
+                        <select id="language" class="bg-black text-xs border border-neutral-800 rounded px-3 py-1.5 focus:border-blue-500 outline-none">
+                            <option value="python">python@3.11</option>
+                            <option value="bash">bash@latest</option>
+                        </select>
+                    </div>
+
+                    <textarea id="code" 
+                        class="w-full h-80 input-base rounded-md p-5 mono text-[13px] leading-relaxed mb-6 resize-none" 
+                        placeholder="Define sequence..."
+                        spellcheck="false"></textarea>
+
+                    <div class="flex items-center space-x-4">
+                        <button id="run-btn" class="bg-white text-black text-xs font-bold px-8 py-3 rounded hover:bg-neutral-200 transition-colors uppercase tracking-tight">
+                            Execute
+                        </button>
+                        <div id="res-status" class="text-[10px] font-bold uppercase tracking-widest text-muted">Standby</div>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-muted mb-4 block">System Output</span>
+                    <div id="output" class="w-full min-h-[120px] mono text-[12px] text-neutral-400 whitespace-pre-wrap selection:bg-blue-500/30"></div>
+                </div>
+            </div>
+
+            <!-- Right: Monitoring -->
+            <div class="col-span-12 lg:col-span-5 space-y-8">
+                <!-- Metrics -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="card p-5">
+                        <p class="text-[10px] uppercase tracking-widest text-muted mb-2 font-semibold">Invocations</p>
+                        <span id="stat-total" class="text-xl font-light tabular-nums">0</span>
+                    </div>
+                    <div class="card p-5 border-l-2 border-l-red-900/50">
+                        <p class="text-[10px] uppercase tracking-widest text-muted mb-2 font-semibold text-red-400/80">Security Triggers</p>
+                        <span id="stat-traps" class="text-xl font-light tabular-nums">0</span>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div class="card flex flex-col h-[525px]">
+                    <div class="p-5 border-b border-neutral-800 flex justify-between items-center">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-muted">Audit Log</span>
+                        <span class="text-[10px] text-muted font-mono uppercase">Last 50 Events</span>
+                    </div>
+                    <div class="overflow-y-auto flex-grow px-2">
+                        <table class="w-full text-left">
+                            <tbody id="history-body" class="text-[11px]">
+                                <!-- Data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
